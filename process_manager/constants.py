@@ -1,0 +1,15 @@
+PROCESS_METRICES_TITLES = 'PID USER PR NI VIRT RES SHR S %CPU %MEM TIME+ COMMAND'
+METRIC_DATA_INDEX_TUPLE = ((0,'PID'),
+                           (1,'USER'),
+                           (2,'PRIORITY'),
+                           (3, 'NICE VALUE'),
+                           (4, 'VIRTUAL'),
+                           (5, 'RESERVED'),
+                           (6,'SHARED'),
+                           (7,'STATUS'),
+                           (8,'%CPU'),
+                           (9,'%MEMORY'),
+                           (10,'TIME'),
+                           (11,'COMMAND'),
+                           (12,'NONE'),
+                           (13,'NONE'))
