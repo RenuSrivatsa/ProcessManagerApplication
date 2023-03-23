@@ -1,8 +1,6 @@
 import sys
 from PyQt5.QtWidgets import *
 from service import Service
-from PyQt5.QtGui import QFont, QFontDatabase
-from PyQt5 import QtCore
 
 class App(QWidget):
 	def __init__(self):
@@ -37,7 +35,6 @@ class App(QWidget):
 
 		#Column count
 		self.tableWidget.setColumnCount(12)
-		column = 0
 
 		for data_row in data:
 			# print(data_row)
@@ -57,8 +54,7 @@ class App(QWidget):
 			self.tableWidget.setItem(row,11, QTableWidgetItem(data_row['COMMAND']))
 
 
-		for data_column in data:
-			column=+1
+		#for data_column in data:
 			#self.tableWidget.setColumnWidth(10,100)
 			self.tableWidget.resizeColumnsToContents()
 			self.tableWidget.setHorizontalHeaderItem(0, QTableWidgetItem('PID'))
