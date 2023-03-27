@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtCore import QTimer
 from main import get_process_data
 
+
 class App(QWidget):
 	def __init__(self):
 		super().__init__()
@@ -16,16 +17,17 @@ class App(QWidget):
 		self.width = 1200
 		self.height = 500
 
-		self.setWindowTitle(self.title)
+		self.setWindowTitle(self.title)	
 		self.setGeometry(self.left, self.top, self.width, self.height)
-		
+		# self.label = QLabel("15")
+		# self.label.show()
 		
 		self.createTable()
-		#self.timer()
 		self.layout = QVBoxLayout()
 		self.layout.addWidget(self.ref_btn())
-		#self.layout.addWidget(self.timer())
-		self.layout.addWidget(self.tableWidget)
+		self.layout.addSpacing(20)
+		self.layout.addWidget(self.tableWidget, stretch = 1)
+		self.setLayout(self.layout)
 
 		#Show window
 		self.show()
@@ -46,7 +48,7 @@ class App(QWidget):
 
 		#Column count
 		self.tableWidget.setColumnCount(12)
-		column = 0 
+		#column = 0 
 
 		for data_row in data:
 			# print(data_row)
@@ -66,8 +68,8 @@ class App(QWidget):
 			self.tableWidget.setItem(row,11, QTableWidgetItem(data_row['COMMAND']))
 
 
-		for data_column in data:
-			column+=1
+		# for data_column in data:
+			# column+=1
 			#self.tableWidget.setColumnWidth(10,100)
 			self.tableWidget.resizeColumnsToContents()
 			self.tableWidget.setHorizontalHeaderItem(0, QTableWidgetItem('PID'))
@@ -90,28 +92,31 @@ class App(QWidget):
 		#self.tableWidget.horizontalHeader().setSectionResizeMode(
 			#QHeaderView.Stretch)
 
-	# def timer(self):
-	# 	self.timer = QTimer
-	# 	self.timer.setInterval(15000)
-	# 	self.timer.timeout.connect(self.restart_countdown)
-	# 	#self.timeInSec = 15
-	# 	self.timer.start()
+	# def time_countdown(self):
+	# 	self.label = QLabel("15")
+	# 	self.label.show()
+		#self.timer = 15
+		#self.label = QTimer()
+		#self.label.setInterval(15000)
+		#self.label.timeout.connect(self.restart_countdown)
+		#self.timeInSec = 15
+		#self.label.start()
 
 	# def restart_countdown(self):
-	# 	self.timer -= 1
-	# 	if self.timer == 0:
-	# 		self.timer
+	# 	remaining_time = int(self.label.text()) - 1
+	# 	self.label.setText(str(remaining_time))
+	# 	if remaining_time == 0:
+	# 		self.time_countdown
+	# 		print("Timer Updated!")
 		
 
 	def ref_btn(self):
-		self.btn = QtWidgets.QPushButton('Refresh', self)
+		self.btn = QPushButton('Refresh', self)
 		self.btn.clicked.connect(self.clicked_btn)
-		#self.btn.resize(100,40)	
-		#self.btn.move(0,500)
-	#	self.btn.raise_()
+
 	
 	def clicked_btn(self):
-		get_process_data(output_file= True)
+		print(get_process_data(output_file=[]))
 
 	#def btn_visible(self):
 	#	if self.btn.isVisible():
