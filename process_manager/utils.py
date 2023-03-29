@@ -10,7 +10,7 @@ def get_process_metric(line_data):
     for i in range(data_length):
         if data_list[i]:
             data_dict[METRIC_DATA_INDEX_TUPLE[i][1]]=data_list[i]
-    print(data_dict)
+    # print(data_dict)
     return data_dict
     
 

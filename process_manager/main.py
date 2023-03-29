@@ -49,4 +49,4 @@ if __name__=='__main__':
     parser.add_argument('--output_file', type=str, required=True)
     args = parser.parse_args()
     processes = get_process_data(args.output_file+'.txt')
-    print(processes)
+    # print(processes)

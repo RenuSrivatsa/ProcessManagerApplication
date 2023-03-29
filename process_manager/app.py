@@ -1,11 +1,12 @@
 import sys
 from PyQt5.QtWidgets import *
 from service import Service
-from PyQt5.uic import loadUi
-from PyQt5 import QtWidgets
+#from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtCore import QTimer
 from main import get_process_data
+from datetime import datetime
+
 
 
 class App(QWidget):
@@ -19,8 +20,6 @@ class App(QWidget):
 
 		self.setWindowTitle(self.title)	
 		self.setGeometry(self.left, self.top, self.width, self.height)
-		# self.label = QLabel("15")
-		# self.label.show()
 		
 		self.createTable()
 		self.layout = QVBoxLayout()
@@ -33,8 +32,9 @@ class App(QWidget):
 		self.show()
 
 		self.ref_btn()
-		#self.btn_visible()
 		self.clicked_btn()
+		self.auto_refresh()
+		
 
 	#Create table
 	def createTable(self):
@@ -87,28 +87,14 @@ class App(QWidget):
 
 
 
-		#Table will fit the screen horizontally
-		#self.tableWidget.horizontalHeader().setStretchLastSection(True)
-		#self.tableWidget.horizontalHeader().setSectionResizeMode(
-			#QHeaderView.Stretch)
 
-	# def time_countdown(self):
-	# 	self.label = QLabel("15")
-	# 	self.label.show()
-		#self.timer = 15
-		#self.label = QTimer()
-		#self.label.setInterval(15000)
-		#self.label.timeout.connect(self.restart_countdown)
-		#self.timeInSec = 15
-		#self.label.start()
+	def auto_refresh(self):
+		self.timer = QTimer()
+		self.timer.setInterval(5000)
+		self.timer.timeout.connect(self.clicked_btn)
+		self.timer.start()
 
-	# def restart_countdown(self):
-	# 	remaining_time = int(self.label.text()) - 1
-	# 	self.label.setText(str(remaining_time))
-	# 	if remaining_time == 0:
-	# 		self.time_countdown
-	# 		print("Timer Updated!")
-		
+	
 
 	def ref_btn(self):
 		self.btn = QPushButton('Refresh', self)
@@ -116,7 +102,42 @@ class App(QWidget):
 
 	
 	def clicked_btn(self):
-		print(get_process_data(output_file=[]))
+
+		start = datetime.now()
+
+		print('data updated')
+		# print(get_process_data(output_file=[]))
+
+		service = Service()
+		data = service.get_process_data()
+
+		self.tableWidget.setRowCount(len(data))
+		row = 0
+
+		#Column count
+		self.tableWidget.setColumnCount(12)
+
+		for data_row in data:
+			# print(data_row)
+			row+=1
+			self.tableWidget.resizeRowsToContents()
+			self.tableWidget.setItem(row,0, QTableWidgetItem(data_row['PID']))
+			self.tableWidget.setItem(row,1, QTableWidgetItem(data_row['USER']))
+			self.tableWidget.setItem(row,2, QTableWidgetItem(data_row['PRIORITY']))
+			self.tableWidget.setItem(row,3, QTableWidgetItem(data_row['NICE VALUE']))
+			self.tableWidget.setItem(row,4, QTableWidgetItem(data_row['VIRTUAL']))
+			self.tableWidget.setItem(row,5, QTableWidgetItem(data_row['RESERVED']))
+			self.tableWidget.setItem(row,6, QTableWidgetItem(data_row['SHARED']))
+			self.tableWidget.setItem(row,7, QTableWidgetItem(data_row['STATUS']))
+			self.tableWidget.setItem(row,8, QTableWidgetItem(data_row['%CPU']))
+			self.tableWidget.setItem(row,9, QTableWidgetItem(data_row['%MEMORY']))
+			self.tableWidget.setItem(row,10, QTableWidgetItem(data_row['TIME']))
+			self.tableWidget.setItem(row,11, QTableWidgetItem(data_row['COMMAND']))
+		
+		print("Table Updated")
+
+		print('Table update took: ' + str((datetime.now() - start).total_seconds()) + ' secs')
+
 
 	#def btn_visible(self):
 	#	if self.btn.isVisible():
