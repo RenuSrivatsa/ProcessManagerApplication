@@ -20,37 +20,54 @@ class App(QWidget):
 
 		self.setWindowTitle(self.title)	
 		self.setGeometry(self.left, self.top, self.width, self.height)
-		
+
+		self.get_data()
 		self.createTable()
 		self.layout = QVBoxLayout()
 		self.layout.addWidget(self.ref_btn())
+		self.layout.addSpacing(20)
+		#self.layout.addWidget(self.clr_btn())
 		self.layout.addSpacing(20)
 		self.layout.addWidget(self.tableWidget, stretch = 1)
 		self.setLayout(self.layout)
 
 		#Show window
 		self.show()
-
 		self.ref_btn()
 		self.clicked_btn()
-		self.auto_refresh()
+		#self.clr_btn()
+		#self.clearContent()	
+		self.upload_data()
+		# self.auto_refresh()
 		
 
 	#Create table
-	def createTable(self):
-		service = Service()
-		data = service.get_process_data()
-		self.tableWidget = QTableWidget()
+	def get_data(self):
+		self.service = Service()
+		self.data = self.service.get_process_data()
 
+	def createTable(self):
+		self.tableWidget = QTableWidget()
+		
+		self.upload_data()
+
+		# #Row count
+		# self.tableWidget.setRowCount(len(data))
+		# row = 0
+
+		# #Column count
+		# self.tableWidget.setColumnCount(12)
+		# #column = 0 
+
+	def upload_data(self):
 		#Row count
-		self.tableWidget.setRowCount(len(data))
+		self.tableWidget.setRowCount(len(self.data))
 		row = 0
 
 		#Column count
 		self.tableWidget.setColumnCount(12)
-		#column = 0 
-
-		for data_row in data:
+		#column = 0
+		for data_row in self.data:
 			# print(data_row)
 			row+=1
 			self.tableWidget.resizeRowsToContents()
@@ -67,10 +84,6 @@ class App(QWidget):
 			self.tableWidget.setItem(row,10, QTableWidgetItem(data_row['TIME']))
 			self.tableWidget.setItem(row,11, QTableWidgetItem(data_row['COMMAND']))
 
-
-		# for data_column in data:
-			# column+=1
-			#self.tableWidget.setColumnWidth(10,100)
 			self.tableWidget.resizeColumnsToContents()
 			self.tableWidget.setHorizontalHeaderItem(0, QTableWidgetItem('PID'))
 			self.tableWidget.setHorizontalHeaderItem(1, QTableWidgetItem('USER'))
@@ -88,11 +101,11 @@ class App(QWidget):
 
 
 
-	def auto_refresh(self):
-		self.timer = QTimer()
-		self.timer.setInterval(5000)
-		self.timer.timeout.connect(self.clicked_btn)
-		self.timer.start()
+	# def auto_refresh(self):
+	# 	self.timer = QTimer()
+	# 	self.timer.setInterval(15000)
+	# 	self.timer.timeout.connect(self.clicked_btn)
+	# 	self.timer.start()
 
 	
 
@@ -100,50 +113,33 @@ class App(QWidget):
 		self.btn = QPushButton('Refresh', self)
 		self.btn.clicked.connect(self.clicked_btn)
 
-	
 	def clicked_btn(self):
+		self.tableWidget.clearContents()
 
-		start = datetime.now()
-
-		print('data updated')
-		# print(get_process_data(output_file=[]))
-
-		service = Service()
-		data = service.get_process_data()
-
-		self.tableWidget.setRowCount(len(data))
-		row = 0
-
-		#Column count
-		self.tableWidget.setColumnCount(12)
-
-		for data_row in data:
-			# print(data_row)
-			row+=1
-			self.tableWidget.resizeRowsToContents()
-			self.tableWidget.setItem(row,0, QTableWidgetItem(data_row['PID']))
-			self.tableWidget.setItem(row,1, QTableWidgetItem(data_row['USER']))
-			self.tableWidget.setItem(row,2, QTableWidgetItem(data_row['PRIORITY']))
-			self.tableWidget.setItem(row,3, QTableWidgetItem(data_row['NICE VALUE']))
-			self.tableWidget.setItem(row,4, QTableWidgetItem(data_row['VIRTUAL']))
-			self.tableWidget.setItem(row,5, QTableWidgetItem(data_row['RESERVED']))
-			self.tableWidget.setItem(row,6, QTableWidgetItem(data_row['SHARED']))
-			self.tableWidget.setItem(row,7, QTableWidgetItem(data_row['STATUS']))
-			self.tableWidget.setItem(row,8, QTableWidgetItem(data_row['%CPU']))
-			self.tableWidget.setItem(row,9, QTableWidgetItem(data_row['%MEMORY']))
-			self.tableWidget.setItem(row,10, QTableWidgetItem(data_row['TIME']))
-			self.tableWidget.setItem(row,11, QTableWidgetItem(data_row['COMMAND']))
-		
-		print("Table Updated")
-
-		print('Table update took: ' + str((datetime.now() - start).total_seconds()) + ' secs')
+		self.get_data()
+		self.upload_data()
 
 
-	#def btn_visible(self):
-	#	if self.btn.isVisible():
-	#		print("IsVisible")
-	#	else:
-	#		print("Not Visible")
+
+		# start = datetime.now()
+		#self.createTable()
+		#self.upload_data()
+		# print('Table update took: ' + str((datetime.now() - start).total_seconds()) + ' secs')
+
+
+
+	# def clr_btn(self):
+	# 	self.clrBtn = QPushButton('Clear Table', self)
+	# 	self.clrBtn.clicked.connect(self.clearContent)
+
+	# def clearContent(self):
+	# 	self.tableWidget.clearContents()
+	# 	self.tableWidget.setRowCount(0)
+	# 	self.tableWidget.setColumnCount(0)
+
+	
+
+
 
 
 	def update(self):
