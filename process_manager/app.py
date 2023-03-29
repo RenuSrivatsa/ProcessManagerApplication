@@ -6,6 +6,8 @@ from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtCore import QTimer
 from main import get_process_data
 from datetime import datetime
+from PyQt5.QtGui import QCursor
+from PyQt5 import QtCore, QtGui
 
 
 
@@ -27,7 +29,6 @@ class App(QWidget):
 		self.layout.addWidget(self.ref_btn())
 		self.layout.addSpacing(20)
 		#self.layout.addWidget(self.clr_btn())
-		self.layout.addSpacing(20)
 		self.layout.addWidget(self.tableWidget, stretch = 1)
 		self.setLayout(self.layout)
 
@@ -111,6 +112,8 @@ class App(QWidget):
 
 	def ref_btn(self):
 		self.btn = QPushButton('Refresh', self)
+		self.btn.setStyleSheet("QPushButton::hover""{""background-color : green;""}")
+		self.btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
 		self.btn.clicked.connect(self.clicked_btn)
 
 	def clicked_btn(self):
