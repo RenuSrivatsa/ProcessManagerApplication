@@ -36,10 +36,11 @@ class App(QWidget):
 		self.show()
 		self.ref_btn()
 		self.clicked_btn()
+		self.auto_refresh()
 		#self.clr_btn()
 		#self.clearContent()	
 		self.upload_data()
-		# self.auto_refresh()
+		
 		
 
 	#Create table
@@ -102,11 +103,11 @@ class App(QWidget):
 
 
 
-	# def auto_refresh(self):
-	# 	self.timer = QTimer()
-	# 	self.timer.setInterval(15000)
-	# 	self.timer.timeout.connect(self.clicked_btn)
-	# 	self.timer.start()
+	def auto_refresh(self):
+		self.timer = QTimer()
+		self.timer.setInterval(15000)
+		self.timer.timeout.connect(self.clicked_btn)
+		self.timer.start()
 
 	
 
@@ -117,10 +118,12 @@ class App(QWidget):
 		self.btn.clicked.connect(self.clicked_btn)
 
 	def clicked_btn(self):
+		start = datetime.now()
 		self.tableWidget.clearContents()
 
 		self.get_data()
 		self.upload_data()
+		print('Table update took: ' + str((datetime.now() - start).total_seconds()) + ' secs')
 
 
 
