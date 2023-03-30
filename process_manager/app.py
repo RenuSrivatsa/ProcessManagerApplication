@@ -123,6 +123,7 @@ class App(QWidget):
 
 		self.get_data()
 		self.upload_data()
+		
 		print('Table update took: ' + str((datetime.now() - start).total_seconds()) + ' secs')
 
 
