@@ -9,8 +9,6 @@ from datetime import datetime
 from PyQt5.QtGui import QCursor
 from PyQt5 import QtCore, QtGui
 
-
-
 class App(QWidget):
 	def __init__(self):
 		super().__init__()
@@ -28,7 +26,6 @@ class App(QWidget):
 		self.layout = QVBoxLayout()
 		self.layout.addWidget(self.ref_btn())
 		self.layout.addSpacing(20)
-		#self.layout.addWidget(self.clr_btn())
 		self.layout.addWidget(self.tableWidget, stretch = 1)
 		self.setLayout(self.layout)
 
@@ -36,9 +33,7 @@ class App(QWidget):
 		self.show()
 		self.ref_btn()
 		self.clicked_btn()
-		self.auto_refresh()
-		#self.clr_btn()
-		#self.clearContent()	
+		self.auto_refresh()	
 		self.upload_data()
 		
 		
@@ -52,14 +47,6 @@ class App(QWidget):
 		self.tableWidget = QTableWidget()
 		
 		self.upload_data()
-
-		# #Row count
-		# self.tableWidget.setRowCount(len(data))
-		# row = 0
-
-		# #Column count
-		# self.tableWidget.setColumnCount(12)
-		# #column = 0 
 
 	def upload_data(self):
 		#Row count
@@ -116,6 +103,7 @@ class App(QWidget):
 		self.btn.setStyleSheet("QPushButton::hover""{""background-color : green;""}")
 		self.btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
 		self.btn.clicked.connect(self.clicked_btn)
+		
 
 	def clicked_btn(self):
 		start = datetime.now()
@@ -125,25 +113,6 @@ class App(QWidget):
 		self.upload_data()
 		
 		print('Table update took: ' + str((datetime.now() - start).total_seconds()) + ' secs')
-
-
-
-		# start = datetime.now()
-		#self.createTable()
-		#self.upload_data()
-		# print('Table update took: ' + str((datetime.now() - start).total_seconds()) + ' secs')
-
-
-
-	# def clr_btn(self):
-	# 	self.clrBtn = QPushButton('Clear Table', self)
-	# 	self.clrBtn.clicked.connect(self.clearContent)
-
-	# def clearContent(self):
-	# 	self.tableWidget.clearContents()
-	# 	self.tableWidget.setRowCount(0)
-	# 	self.tableWidget.setColumnCount(0)
-
 	
 
 
